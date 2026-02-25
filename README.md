@@ -1,6 +1,6 @@
 # kanto-pokedex-4198
 
-## 🎯 Objetivo do Projeto
+## 🎯 Project Objective
 Act as a Senior Frontend Developer and UI Designer specializing in Skeuomorphism. I need you to build a fully functional web-based Pokedex that looks exactly like the physical device from the anime (Model: Kanto Pokedex, red casing).
 
 Requirements:
@@ -19,7 +19,7 @@ Integrate with PokeAPI (pokeapi.co) to fetch real Pokemon data.
 Search System: Implement a way to input a Pokemon name or ID.
 
 Navigation: The D-Pad buttons on the UI must be clickable and actually navigate to the next/previous Pokemon.
-Data Display: Show the sprite, name, ID, types, and base stats on the screen.
+Data Display: Show the animated sprite (falling back to static if unavailable), name, ID, types, and base stats on the screen.
 
 Flavor Text: Fetch the 'flavor text' entry and display it.
 

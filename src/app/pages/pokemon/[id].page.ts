@@ -19,7 +19,23 @@ interface PokemonType {
 interface Pokemon {
   id: number;
   name: string;
-  sprites: { front_default: string };
+  sprites: {
+    front_default: string;
+    other?: {
+      showdown?: {
+        front_default?: string;
+      };
+    };
+    versions?: {
+      'generation-v'?: {
+        'black-white'?: {
+          animated?: {
+            front_default?: string;
+          };
+        };
+      };
+    };
+  };
   stats: PokemonStat[];
   types: PokemonType[];
 }
@@ -79,6 +95,21 @@ export default class PokemonidPage {
 
   readonly pokemon = computed(() => this.data().pokemon);
   readonly species = computed(() => this.data().species);
+
+  readonly spriteUrl = computed(() => {
+    const p = this.pokemon();
+    if (!p || !p.sprites) return '';
+
+    if (p.sprites.other?.showdown?.front_default) {
+      return p.sprites.other.showdown.front_default;
+    }
+
+    if (p.sprites.versions?.['generation-v']?.['black-white']?.animated?.front_default) {
+      return p.sprites.versions['generation-v']['black-white'].animated.front_default;
+    }
+
+    return p.sprites.front_default || '';
+  });
 
   onSearch(): void {
     const query = this.searchQuery().trim();
