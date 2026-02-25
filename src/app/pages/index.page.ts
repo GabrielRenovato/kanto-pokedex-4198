@@ -9,13 +9,9 @@ interface Pokemon {
   name: string;
   sprites: {
     front_default: string;
-    versions?: {
-      'generation-v'?: {
-        'black-white'?: {
-          animated?: {
-            front_default?: string;
-          };
-        };
+    other?: {
+      'official-artwork'?: {
+        front_default?: string;
       };
     };
   };
@@ -36,22 +32,18 @@ interface Species {
 export default class IndexPage implements OnInit {
   private readonly http = inject(HttpClient);
 
-  readonly currentId = signal<number>(25); // Start with Pikachu
-  readonly searchInput = signal<string>('');
+  readonly currentId = signal<number>(1); // Default to 1 (Bulbasaur)
+  readonly searchQuery = signal<string>('');
 
-  readonly pokemon = signal<Pokemon | null>(null);
-  readonly description = signal<string>('');
-  readonly loading = signal<boolean>(false);
+  readonly pokemonData = signal<Pokemon | null>(null);
+  readonly flavorText = signal<string>('');
+  readonly isLoading = signal<boolean>(false);
   readonly error = signal<boolean>(false);
 
   readonly spriteUrl = computed(() => {
-    const p = this.pokemon();
+    const p = this.pokemonData();
     if (!p) return '';
-    return (
-      p.sprites?.versions?.['generation-v']?.['black-white']?.animated?.front_default ||
-      p.sprites?.front_default ||
-      ''
-    );
+    return p.sprites?.other?.['official-artwork']?.front_default || p.sprites?.front_default || '';
   });
 
   ngOnInit() {
@@ -61,14 +53,14 @@ export default class IndexPage implements OnInit {
   async loadPokemon(identifier: string | number) {
     if (!identifier) return;
 
-    this.loading.set(true);
+    this.isLoading.set(true);
     this.error.set(false);
 
     try {
       const pData = await firstValueFrom(
         this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${identifier}`)
       );
-      this.pokemon.set(pData);
+      this.pokemonData.set(pData);
       this.currentId.set(pData.id);
 
       const sData = await firstValueFrom(
@@ -79,41 +71,41 @@ export default class IndexPage implements OnInit {
       if (englishEntry) {
         // Clean up weird characters from PokeAPI flavor text
         const cleanText = englishEntry.flavor_text.replace(/[\n\f\r]/g, ' ');
-        this.description.set(cleanText);
+        this.flavorText.set(cleanText);
       } else {
-        this.description.set('NO DATA AVAILABLE.');
+        this.flavorText.set('NO DATA AVAILABLE.');
       }
     } catch (e) {
       this.error.set(true);
-      this.pokemon.set(null);
-      this.description.set('');
+      this.pokemonData.set(null);
+      this.flavorText.set('');
     } finally {
-      this.loading.set(false);
-      this.searchInput.set(''); // Clear input after search
+      this.isLoading.set(false);
+      this.searchQuery.set(''); // Clear input after search
     }
   }
 
   handleSearch() {
-    const query = this.searchInput().trim().toLowerCase();
+    const query = this.searchQuery().trim().toLowerCase();
     if (query) {
       this.loadPokemon(query);
     }
   }
 
   next() {
-    if (!this.loading()) {
+    if (!this.isLoading()) {
       this.loadPokemon(this.currentId() + 1);
     }
   }
 
   prev() {
-    if (!this.loading() && this.currentId() > 1) {
+    if (!this.isLoading() && this.currentId() > 1) {
       this.loadPokemon(this.currentId() - 1);
     }
   }
 
   getStat(name: string): number {
-    const p = this.pokemon();
+    const p = this.pokemonData();
     if (!p) return 0;
     const stat = p.stats.find((s) => s.stat.name === name);
     return stat ? stat.base_stat : 0;
