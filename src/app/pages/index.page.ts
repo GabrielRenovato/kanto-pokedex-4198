@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +7,18 @@ import { firstValueFrom } from 'rxjs';
 interface Pokemon {
   id: number;
   name: string;
-  sprites: { front_default: string };
+  sprites: {
+    front_default: string;
+    versions?: {
+      'generation-v'?: {
+        'black-white'?: {
+          animated?: {
+            front_default?: string;
+          };
+        };
+      };
+    };
+  };
   types: { type: { name: string } }[];
   stats: { base_stat: number; stat: { name: string } }[];
 }
@@ -32,6 +43,16 @@ export default class IndexPage implements OnInit {
   readonly description = signal<string>('');
   readonly loading = signal<boolean>(false);
   readonly error = signal<boolean>(false);
+
+  readonly spriteUrl = computed(() => {
+    const p = this.pokemon();
+    if (!p) return '';
+    return (
+      p.sprites?.versions?.['generation-v']?.['black-white']?.animated?.front_default ||
+      p.sprites?.front_default ||
+      ''
+    );
+  });
 
   ngOnInit() {
     this.loadPokemon(this.currentId());

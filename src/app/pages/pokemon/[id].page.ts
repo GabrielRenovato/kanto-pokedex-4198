@@ -22,17 +22,8 @@ interface Pokemon {
   sprites: {
     front_default: string;
     other?: {
-      showdown?: {
+      'official-artwork'?: {
         front_default?: string;
-      };
-    };
-    versions?: {
-      'generation-v'?: {
-        'black-white'?: {
-          animated?: {
-            front_default?: string;
-          };
-        };
       };
     };
   };
@@ -100,12 +91,8 @@ export default class PokemonidPage {
     const p = this.pokemon();
     if (!p || !p.sprites) return '';
 
-    if (p.sprites.other?.showdown?.front_default) {
-      return p.sprites.other.showdown.front_default;
-    }
-
-    if (p.sprites.versions?.['generation-v']?.['black-white']?.animated?.front_default) {
-      return p.sprites.versions['generation-v']['black-white'].animated.front_default;
+    if (p.sprites.other?.['official-artwork']?.front_default) {
+      return p.sprites.other['official-artwork'].front_default;
     }
 
     return p.sprites.front_default || '';

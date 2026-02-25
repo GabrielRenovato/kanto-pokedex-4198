@@ -91,9 +91,9 @@
           <!-- Sprite & Number -->
           <div class="flex flex-col items-start mt-1 z-10">
             <img
-              [src]="pokemon()?.sprites?.front_default"
+              [src]="spriteUrl()"
               alt="sprite"
-              class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-md"
+              class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-md object-contain"
               style="image-rendering: pixelated"
             />
             <div class="text-lg sm:text-xl font-bold mt-1">NO. {{ formatId(pokemon()?.id) }}</div>

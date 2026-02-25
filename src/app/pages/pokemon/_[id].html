@@ -59,14 +59,13 @@
             <!-- Top Row: Sprite & ID -->
             <div class="flex justify-between items-start mb-2">
               <div
-                class="w-24 h-24 bg-black/5 rounded flex items-center justify-center border border-black/10"
+                class="w-24 h-24 bg-black/5 rounded flex items-center justify-center border border-black/10 overflow-hidden"
               >
                 @if (spriteUrl()) {
                   <img
                     [src]="spriteUrl()"
                     [alt]="pokemon()?.name"
                     class="w-20 h-20 object-contain"
-                    style="image-rendering: pixelated"
                   />
                 }
               </div>
