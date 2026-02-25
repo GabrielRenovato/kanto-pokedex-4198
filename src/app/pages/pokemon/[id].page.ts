@@ -22,6 +22,9 @@ interface Pokemon {
   sprites: {
     front_default: string;
     other?: {
+      home?: {
+        front_default?: string;
+      };
       'official-artwork'?: {
         front_default?: string;
       };
@@ -91,10 +94,12 @@ export default class PokemonidPage {
     const p = this.pokemon();
     if (!p || !p.sprites) return '';
 
-    if (p.sprites.other?.['official-artwork']?.front_default) {
-      return p.sprites.other['official-artwork'].front_default;
+    // Prioritize 3D Home Render
+    if (p.sprites.other?.home?.front_default) {
+      return p.sprites.other.home.front_default;
     }
 
+    // Fallback to default sprite
     return p.sprites.front_default || '';
   });
 

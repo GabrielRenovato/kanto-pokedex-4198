@@ -19,7 +19,7 @@ Integrate with PokeAPI (pokeapi.co) to fetch real Pokemon data.
 Search System: Implement a way to input a Pokemon name or ID.
 
 Navigation: The D-Pad buttons on the UI must be clickable and actually navigate to the next/previous Pokemon.
-Data Display: Show the animated sprite (falling back to static if unavailable), name, ID, types, and base stats on the screen.
+Data Display: Show the 3D render sprite (falling back to static if unavailable), name, ID, types, and base stats on the screen.
 
 Flavor Text: Fetch the 'flavor text' entry and display it.
 
@@ -44,8 +44,6 @@ Este arquivo serve como a memória central do projeto. **Sempre que você (IA) a
 ### 📂 Páginas e Rotas Atuais
 - `index`
 - `pokemon/[id]`
-
-
 
 ### 📝 Regras do Projeto
 - Componentes devem usar `export default class`.
